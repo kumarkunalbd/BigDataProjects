@@ -1,4 +1,4 @@
-CREATE TABLE card_transactions_v1 (card_id string, member_id string, amount string, postcode string, pos_id string, 
+ CREATE TABLE card_transactions_v1 (card_id string, member_id string, amount string, postcode string, pos_id string, 
  transaction_dt string, status string)
  row format delimited fields terminated by ',';
  
@@ -37,3 +37,24 @@ drop table amazon_hbase_card_transactions_v1;
 
 select count(*) from card_transactions_v2;
 select * from card_transactions_v2 limit 10;
+
+
+ CREATE TABLE lookup_v1 (card_id string, UCL string, postcode string, transaction_dt string, score string)
+ row format delimited fields terminated by ',';
+ 
+ 
+ CREATE TABLE lookup_v2 
+ AS
+ SELECT 
+  regexp_replace(reflect('java.util.UUID','randomUUID'), '-', '') as rowid,
+  * from lookup_v1;
+  
+select count(*) from lookup_v2;
+drop table lookup_v1;
+
+
+create table amazon_hbase_card_lookup_v2(`rowid` string, `card_id` string, `ucl` string, `postcode` string,
+`transaction_dt` string, `score` string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,cf1:card_id,cf1:ucl,cf1:postcode,cf1:transaction_dt,cf1:score")
+TBLPROPERTIES ("hbase.table.name" = "amazon_hive_card_lookup_v2");
