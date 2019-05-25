@@ -1,0 +1,39 @@
+CREATE TABLE card_transactions_v1 (card_id string, member_id string, amount string, postcode string, pos_id string, 
+ transaction_dt string, status string)
+ row format delimited fields terminated by ',';
+ 
+ Add jar /opt/cloudera/parcels/CDH/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-1.1.0-cdh5.15.0.jar; 
+
+
+LOAD DATA INPATH '/user/ec2-user/card_transactions-1.csv' OVERWRITE INTO TABLE card_transactions_v1;
+
+SELECT count(*) from card_transactions_v1;
+
+select * from card_transactions_v1 LIMIT 20;
+
+create table amazon_hbase_card_transactions_v2(`rowid` string, `card_id` string, `member_id` string, `amount` string,
+`postcode` string,`pos_id` string, `transaction_dt` string, `status` string)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,cf1:card_id,cf1:member_id,cf1:amount,cf1:postcode,cf1:pos_id,cf1:transaction_dt,cf1:status")
+TBLPROPERTIES ("hbase.table.name" = "amazon_hive_card_transactions_v2");
+
+insert overwrite table amazon_hbase_card_transactions_v2
+select card_transactions_v2.rowid,card_transactions_v2.card_id,card_transactions_v2.member_id,
+card_transactions_v2.amount,card_transactions_v2.postcode,
+card_transactions_v2.pos_id,card_transactions_v2.transaction_dt,
+card_transactions_v2.status
+from card_transactions_v2;
+
+SELECT count(*) from amazon_hbase_card_transactions_v2;
+
+drop table amazon_hbase_card_transactions_v1;
+
+ CREATE TABLE card_transactions_v2 
+ AS
+ SELECT 
+  regexp_replace(reflect('java.util.UUID','randomUUID'), '-', '') as rowid,
+  * from card_transactions_v1;
+  
+
+select count(*) from card_transactions_v2;
+select * from card_transactions_v2 limit 10;
