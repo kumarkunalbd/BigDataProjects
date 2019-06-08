@@ -1,0 +1,16 @@
+<workflow-app name="sqoop-sample-wf" xmlns="uri:oozie:workflow:0.5">
+    <start to="mysqoopjob"/>
+    <action name="mysqoopjob">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>hdfs://ip-172-31-94-227.ec2.internal:8032</job-tracker>
+            <name-node>hdfs://ip-172-31-94-227.ec2.internal:8020</name-node>
+            <prepare>
+                <delete path="/user/root/capstoneproject1/alltables_test1/card_member"/>
+            </prepare>
+            <command>import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table card_member --target-dir /user/root/capstoneproject1/alltables_test1</command>
+        </sqoop>
+        <ok to="finish"/>
+        <error to="finish"/>
+    </action>
+    <end name="finish"/>
+</workflow-app>

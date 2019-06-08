@@ -1,0 +1,100 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\froman\fcharset0 Times-Bold;\f2\fmodern\fcharset0 Courier;
+\f3\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red38\green38\blue38;\red242\green242\blue242;
+\red242\green242\blue242;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue117;\red83\green85\blue2;
+\red115\green0\blue2;\red115\green0\blue2;\red77\green77\blue77;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c20000\c20000\c20000;\cssrgb\c96078\c96078\c96078;
+\cssrgb\c96078\c96078\c96078;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c53333;\cssrgb\c40000\c40000\c0;
+\cssrgb\c53333\c0\c0;\cssrgb\c53333\c0\c0;\cssrgb\c37647\c37647\c37647;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15960\viewh9860\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 sqoop job --create cardmemberimportInitial -- import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table card_member 
+\f1\b\fs32 \cf3 \cb4 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec3 --target-dir 
+\f0\b0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 /user/root/capstoneproject1/alltables/card_member\
+\
+\
+sqoop job --create memberScoreInitial -- import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table member_score 
+\f1\b\fs32 \cf3 \cb5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 --target-dir 
+\f0\b0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 /user/root/capstoneproject1/alltables/member_score\cf2 \
+\
+\
+\
+\pard\pardeftab720\sl420\partightenfactor0
+
+\f2\fs32 \cf6 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec6 sqoop\'a0\cf8 \strokec8 import\cf6 \strokec6 \'a0\cf9 \strokec9 --\cf6 \strokec6 connect 
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data
+\f2\fs32 \cf10 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec10  --username upgraduser --password \cf11 \cb7 \outl0\strokewidth0 upgraduser\cf10 \cb7 \outl0\strokewidth0 \strokec10  --table 
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 card_member
+\f2\fs32 \cf10 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec10  --target-dir /user/root/
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 capstoneproject1
+\f2\fs32 \cf10 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec10 /
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 alltables
+\f2\fs32 \cf10 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec10 /incremental_table --check-column member_joining_dt --incremental lastmodified --last-value \{last_import_date\}\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 sqoop job --create cardmemberimportIncremental -- import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table card_member 
+\f1\b\fs32 \cf3 \cb5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 --target-dir 
+\f0\b0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 /user/root/capstoneproject1/alltables/card_member 
+\f2\fs32 \cf11 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 --check-column member_joining_dt --incremental append\
+\
+\
+
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 sqoop job --list --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop\
+\
+sqoop job --delete inc_update_card_member --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop\
+\
+\pard\pardeftab720\sl320\sa40\partightenfactor0
+
+\f3\fs28 \cf12 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec12 sqoop job --exec inc_update_card_member --meta-connect jdbc:hsqldb:hsql://
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 ip-172-31-94-227.ec2.internal
+\f3\fs28 \cf12 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec12 16000/sqoop\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\fs32 \cf11 \cb7 \outl0\strokewidth0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf11 \cb7 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 sqoop job --create inc_update_card_member --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop -- import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table card_member --target-dir /user/root/capstoneproject1/alltables/card_member_inc --check-column member_joining_dt --incremental append\
+\
+sqoop job --create member_score_import --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop -- import --connect jdbc:mysql://upgradawsrds.cpclxrkdvwmz.us-east-1.rds.amazonaws.com/cred_financials_data --username upgraduser --password upgraduser --table member_score --target-dir /user/root/capstoneproject1/alltables/member_score\
+\
+\
+CREATE EXTERNAL TABLE card_member_ext(\
+card_id String,member_id String,\
+member_joining_dt timestamp,card_purchase_dt STRING,\
+country String, city String)\
+ROW FORMAT DELIMITED\
+FIELDS TERMINATED BY ','\
+LOCATION '/user/root/capstoneproject1/alltables/card_member/';\
+\
+\
+Create external table If not EXISTS card_member_ext_orc(\
+card_id String,\
+mamber_id double,\
+member_joining_dt TIMESTAMP,\
+card_purchase_dt STRING\
+) PARTITIONED BY (country String, city String)\
+ROW FORMAT DELIMITED\
+FIELDS TERMINATED BY ','\
+LINES TERMINATED BY '\\n'\
+STORED as orc\
+Location '/user/root/capstoneproject1/hivetables/card_member_ext_orc'\
+TBLPROPERTIES  ('orc.compress'='SNAPPY');\
+\
+}

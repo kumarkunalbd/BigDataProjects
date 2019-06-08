@@ -1,0 +1,63 @@
+
+select unix_timestamp('31-07-2017 22:37:30','dd-MM-yyyy');
+
+select unix_timestamp('31-07-2017 22:37:30','dd-MM-yyyy')
+
+select UNIX_TIMESTAMP('2000-01-01 00:00:00');
+select UNIX_TIMESTAMP('01-01-2000 00:00:00');
+
+select UNIX_TIMESTAMP('01-01-2000 00:00:00','dd-MM-yyyy');
+
+--------
+
+SELECT *,unix_timestamp(transaction_dt,'dd-MM-yyyy'),
+          rank() over (partition by card_id order by unix_timestamp(transaction_dt,'dd-MM-yyyy') desc) r
+FROM card_transactions_v2
+WHERE card_id=340028465709212 and status='GENUINE';
+
+
+------
+Calculating Moving average for last 10 transactions
+
+SELECT b.card_id, avg(b.amount)
+FROM
+(
+   SELECT card_id, amount, unix_timestamp(transaction_dt,'dd-MM-yyyy'),
+          rank() over (partition by card_id order by unix_timestamp(transaction_dt,'dd-MM-yyyy') desc) r
+   FROM card_transactions_v2 where status = 'GENUINE'
+) b
+WHERE r <= 10
+GROUP BY b.card_id;
+
+-------------
+Calculated StdDev and Moving average
+
+SELECT b.card_id, avg(b.amount) as average, stddev_pop(b.amount) as StdDev
+FROM
+(
+   SELECT card_id, amount, unix_timestamp(transaction_dt,'dd-MM-yyyy'),
+          rank() over (partition by card_id order by unix_timestamp(transaction_dt,'dd-MM-yyyy') desc) r
+   FROM card_transactions_v2 where status = 'GENUINE'
+) b
+WHERE r <= 10
+GROUP BY b.card_id;
+
+-------
+
+Calculate StdDev, Movinngavegarge and UCL
+
+select *,(average+(3*StdDev)) as UCL
+from(
+SELECT b.card_id, avg(b.amount) as average, stddev_pop(b.amount) as StdDev
+FROM
+(
+   SELECT card_id, amount, unix_timestamp(transaction_dt,'dd-MM-yyyy'),
+          rank() over (partition by card_id order by unix_timestamp(transaction_dt,'dd-MM-yyyy') desc) r
+   FROM card_transactions_v2 where status = 'GENUINE'
+) b
+WHERE r <= 10
+GROUP BY b.card_id
+) AvgStdDev;
+
+
+

@@ -1,0 +1,67 @@
+<workflow-app name="${activity}" xmlns="uri:oozie:workflow:0.5">
+    <start to="sqoop_upload_memberscore_hdfs"/>
+
+    <action name="sqoop_upload_memberscore_hdfs">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>hdfs://ip-172-31-94-227.ec2.internal:8032</job-tracker>
+            <name-node>hdfs://ip-172-31-94-227.ec2.internal:8020</name-node>
+            <job-xml>sqoop-site.xml</job-xml>
+            <prepare>
+                <delete path="${inputPathMemberScore}"/>
+            </prepare>
+            <command>job -exec member_score_import --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop</command>
+        </sqoop>
+        <ok to="sqoop_incremental_upload_cardmember_hdfs"/>
+        <error to="kill"/>
+    </action>
+
+    <action name="sqoop_incremental_upload_cardmember_hdfs">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>sqoop-site.xml</job-xml>
+            <prepare>
+                <delete path="${inputPathCardMemberInc}"/>
+            </prepare>
+            <command>job -exec inc_update_card_member --meta-connect jdbc:hsqldb:hsql://ip-172-31-94-227.ec2.internal:16000/sqoop</command>
+        </sqoop>
+        <ok to="hivetable_load_memberscore_from_HDFS"/>
+        <error to="kill"/>
+    </action>
+
+    <action name="hivetable_load_memberscore_from_HDFS">
+ 	    <hive xmlns="uri:oozie:hive-action:0.2">
+  	    <job-tracker>${jobTracker}</job-tracker>
+        <name-node>${nameNode}</name-node>
+  	    <!--<prepare>
+                  <delete path="${tableDirMemberScore}"/>
+  	              <mkdir path="${tableDirMemberScore}"/>
+        </prepare>-->
+  	    <script>${hiveScriptMemberScore}</script>
+        <param>INPUT_PATH_MEMBERSCORETBL=${inputPathMemberScore}</param>
+      </hive>
+      <ok to="hivetable_load_cardmember_from_HDFS"/>
+      <error to="kill"/>
+    </action>
+
+    <action name="hivetable_load_cardmember_from_HDFS">
+ 	    <hive xmlns="uri:oozie:hive-action:0.2">
+  	    <job-tracker>${jobTracker}</job-tracker>
+        <name-node>${nameNode}</name-node>
+  	    <!--<prepare>
+                  <delete path="${tableDirCardMember}"/>
+  	              <mkdir path="${tableDirCardMember}"/>
+        </prepare>-->
+  	    <script>${hiveScriptCardMember}</script>
+        <param>INPUT_PATH_CARDMEMBERTBL=${inputPathCardMember}</param>
+      </hive>
+      <ok to="finish"/>
+      <error to="kill"/>
+    </action>
+
+    <kill name="kill">
+      <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+
+    <end name="finish"/>
+</workflow-app>
